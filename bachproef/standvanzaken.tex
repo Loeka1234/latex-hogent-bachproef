@@ -7,6 +7,76 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
+Bedrijven slaan veel data op. Doordat deze data nuttig kan zijn voor het indentificeren van nieuwe kansen is het belangrijk om deze data klaar te maken voor business analytics. Dit is het proces van verzamelen, organiseren, analyseren en interpreteren van gegevens om inzichten te krijgen. Er kan bijvoorbeeld gekeken worden naar klantgegevens om zo patronen en trends te vinden in het gedrag van de klant.~\autocite{PratibhaKumari2023}
+
+Doordat bedrijven vaak werken met veel verschillende soorten data die op verschillende plekken opgeslaan worden is het vaak belangrijk dat deze data eerst opgekuist, getransformeerd en georganiseerd moet worden. Dit is waarbij het implementeren van ETL's en ELT's van pas komt.~\autocite{Inmon2023}
+
+\section{Wat zijn ETL's of ELT's?}
+
+ETL's en ELT's zijn processen die organisaties gebruiken voor het verzamelen en samenvoegen van data uit meerdere bronnen. Bij ETL's wordt de data getransformeerd voor het naar de doelopslagplaats geladen wordt, terwijl dit bij ELT's pas achteraf gebeurd. Daardoor staat ETL voor Extract, Transform and Load en ELT voor Extract, Load and Transform.~\autocite{Bartley2023}
+
+\section{Welke soorten ETL tools bestaan er?}
+
+Er bestaan verschillende soorten ETL tools. Zo zijn er de cloud-based ETL tools. Deze worden gehost op cloud infrastructure, zijn zeer schaalbaar en bieden pay-as-you-go prijs modellen aan.~\autocite{Ethan2024}
+
+Daarnaast zijn er ook on-premises ETL tools. Deze worden gehost op de infrastructuur van het bedrijf waardoor het bedrijf er de volledige controle over heeft.~\autocite{Ethan2024}
+
+Afhankelijk van wat men nodig heeft kan er ook gekozen worden voor hybrid ETL tools. Dit is een combinatie van het gebruik van cloud-based tools met het gebruik van on-premises tools.~\autocite{Ethan2024}
+
+Ten slotte zijn er ook open source ETL tools. Dit zijn gratis ETL tools. Voorbeelden hiervan zijn Portable, Apache NiFi, AWS Glue, Airbyte en Informatica.~\autocite{Ethan2024}
+
+\section{Populairste cloud-based ETL tools}
+
+Zoals te zien in de enquête van~\textcite{vines2023overview} is Microsoft Azure, gevolgd door Amazon Web Services (AWS) en Google Cloud Services, de populairste cloud provider. Deze cloud-providers bieden dan ook de meest populaire cloud-based ETL tools aan. 
+
+Microsoft biedt bijvoorbeeld Azure Data Factory en Azure Databricks aan. Binnen Azure Data Factory kan er gebruik gemaakt worden van Mapping Data Flows, dit is een code-vrije manier waarmee ETL's opgebouwd kunnen worden. De logica achter de ETL kan hierna makkelijk getest worden op live data en samples.~\autocite{Kromer2022}
+
+Daarnaast biedt Azure ook Azure Databricks aan. Het verschil hierbij is dat de ETL’s worden geïmplementeerd via code terwijl dat bij Azure Data Factory via de UI tools gebeurt. Azure Databricks is gebaseerd op het Apache Spark opensource project. Het grote voordeel is dat het platform het toelaat om makkelijker te kunnen samen werken. Daarnaast is Apache Spark niet enkel gelimiteerd tot het maken van ETL’s maar kan het ook gebruikt worden voor real-time analytics, machine learning, graph processing, etc.~\autocite{Etaati2019}
+
+Daarnaast bieden ook Amazon Web Services (AWS) en Google Cloud Services ETL tools aan. Zo heeft AWS bijvoorbeeld AWS Glue~\autocite{Khan2024} en Google Cloud heeft Google Data Fusion.~\autocite{Jaiswal2022}
+
+\section{Azure Data Factory (ADF)}
+
+Azure Data Factory is een platform-as-a-service (PAAS) voor het implementeren van ETL's en ELT's. Zowel on-premises als cloudgegevensbronnen worden hierbij geondersteund voor het verplaatsen van gegevens.~\autocite{Rawat2019} 
+
+\subsection{Onderdelen}
+
+Azure Data Factory is opgebouwd uit vijf essentiële onderdelen. 
+
+\subsubsection{Pipeline}
+
+Een pipeline een groep van activiteiten die een reeks processen uitvoert zoals bijvoorbeeld het extraheren of transformeren van gegevens.
+
+\subsubsection{Datasets}
+
+Een dataset is een representatie of verwijzing naar de daadwerkelijke gegevens in gegevensopslag.
+
+\subsubsection{Linked Services}
+
+Linked Services slaan de informatie op die Azure Data Factory nodig heeft voor het connecteren naar een externe data-opslag.
+
+\subsubsection{title}
+
+
+
+
+
+
+
+
+Als data engineer krijgt men data in veel verschillende vormen. Het is dus noodzakelijk omdeze data klaar te maken voor business analytics.
+
+Vandaag de dag bestaan er veel verschillende tools voor het implementeren van ETL's en ELT's. 
+
+\label{sec:toepassing-etl}
+
+\begin{itemize}
+    \item Azure Data Factory
+    \item AWS Glue
+    \item Google Cloud GPC Dataflow
+    
+\end{itemize}
+
 Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
 
 Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.

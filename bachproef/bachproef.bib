@@ -1,28 +1,142 @@
 % Encoding: UTF-8
-@book{Knuth1998,
- author = {Knuth, Donald E.},
- title = {The art of computer programming,  volume 3: (2nd ed.) sorting and searching},
- year = {1998},
- publisher = {Addison Wesley Longman Publishing Co., Inc.},
- address = {Redwood City, CA, USA}
+
+@Book{Knuth1998,
+  author    = {Knuth, Donald E.},
+  title     = {The art of computer programming, volume 3: (2nd ed.) sorting and searching},
+  publisher = {Addison Wesley Longman Publishing Co., Inc.},
+  address   = {Redwood City, CA, USA},
+  priority  = {prio3},
+  relevance = {relevant},
+  year      = {1998},
 }
 
-@book{Pollefliet2011,
-  author = {Pollefliet, Leen},
-  title = {Schrijven van verslag tot eindwerk: do's en don'ts},
-  year = {2011},
+@Book{Pollefliet2011,
+  author    = {Pollefliet, Leen},
+  title     = {Schrijven van verslag tot eindwerk: do's en don'ts},
   publisher = {Academia Press},
-  address = {Gent}
+  address   = {Gent},
+  priority  = {prio3},
+  relevance = {relevant},
+  year      = {2011},
 }
 
-@article{Creeger2009,
-  author = {Creeger, Mache},
-  journal = {Communications of the ACM},
-  number = {8},
-  pages = {50--56},
-  title = {{CTO Roundtable: Cloud Computing}},
-  volume = {52},
-  year = {2009}
+@Article{Creeger2009,
+  author    = {Creeger, Mache},
+  title     = {{CTO Roundtable: Cloud Computing}},
+  number    = {8},
+  pages     = {50--56},
+  volume    = {52},
+  journal   = {Communications of the ACM},
+  priority  = {prio3},
+  relevance = {relevant},
+  year      = {2009},
+}
+
+@InProceedings{vines2023overview,
+  author    = {Vines, Andreea and Tanasescu, Laura},
+  booktitle = {Proceedings of the International Conference on Business Excellence},
+  title     = {An Overview of ETL Cloud Services: An Empirical Study Based on User’s Experience},
+  number    = {1},
+  pages     = {2085--2098},
+  url       = {https://intapi.sciendo.com/pdf/10.2478/picbe-2023-0182},
+  volume    = {17},
+  priority  = {prio1},
+  year      = {2023},
+}
+
+@Online{PratibhaKumari2023,
+  author   = {Pratibha Kumari J.},
+  date     = {2023-03-06},
+  title    = {What is Business Analytics? Definition, Importance & Examples},
+  url      = {https://www.linkedin.com/pulse/what-business-analytics-definition-importance-examples-jha/},
+  priority = {prio1},
+}
+
+@Online{Inmon2023,
+  author   = {Bill Inmon},
+  date     = {2023-03-31},
+  title    = {Understanding the Necessity of ETL in Data Integration},
+  url      = {https://www.integrate.io/blog/etl-in-data-integration/},
+  priority = {prio1},
+}
+
+@Online{Bartley2023,
+  author   = {Kevin Bartley},
+  date     = {2023-01-02},
+  title    = {What is the Difference Between ETL and ELT?},
+  url      = {https://rivery.io/blog/etl-vs-elt/},
+  priority = {prio1},
+}
+
+@Online{Ethan2024,
+  author   = {Ethan},
+  date     = {2024-01-14},
+  title    = {100+ Best ETL Tools List & Software (January 2024 Update)},
+  url      = {https://portable.io/learn/best-etl-tools},
+  priority = {prio1},
+}
+
+@InBook{Kromer2022,
+  author    = {Kromer, Mark},
+  booktitle = {Mapping Data Flows in Azure Data Factory: Building Scalable ETL Projects in the Microsoft Cloud},
+  date      = {2022-08-26},
+  title     = {Introduction to Mapping Data Flows},
+  doi       = {10.1007/978-1-4842-8612-8_3},
+  isbn      = {978-1-4842-8612-8},
+  location  = {Berkeley, CA},
+  pages     = {27--50},
+  publisher = {Apress},
+  url       = {https://doi.org/10.1007/978-1-4842-8612-8_3},
+  abstract  = {Mapping Data Flows is the code-free data transformation feature in Azure Data Factory that allows data engineers to build powerful ETL jobs at scale. You can interactively design and test your data flow logic against live data and data samples while constructing a data transformation graph using the Mapping Data Flows designer UI. Then, you can operationalize your work as a Data Flow activity inside of an ADF pipeline. The Azure Integration Runtime is utilized for both debugging and pipeline executions of your data flows, while ADF manages an ephemeral and elastic Spark environment for you in a serverless manner. Throughout the next chapters in this book, I'll refer to the experience of building ETL logic as Mapping Data Flows, the pipeline activity to execute your work as Data Flows, and sometimes will shorten the full name to MDF.},
+  priority  = {prio1},
+  year      = {2022},
+}
+
+@InBook{Etaati2019,
+  author    = {Etaati, Leila},
+  booktitle = {Machine Learning with Microsoft Technologies: Selecting the Right Architecture and Tools for Your Project},
+  date      = {2019-06-13},
+  title     = {Azure Databricks},
+  doi       = {10.1007/978-1-4842-3658-1_10},
+  isbn      = {978-1-4842-3658-1},
+  location  = {Berkeley, CA},
+  pages     = {159--171},
+  publisher = {Apress},
+  url       = {https://doi.org/10.1007/978-1-4842-3658-1_10},
+  abstract  = {Databricks is an analytics service based on the Apache Spark open source project. Apache Spark is a batch processing and real time processing environment. Apache Spark is quite popular among data scientists because of its ability to analyze huge amounts of data, its streaming capabilities, graph computation, machine learning, and interactive queries engine. Spark provides in-memory cluster computing. One of the popular tools for big data analytics on Spark is Databricks. Databricks has been used for ingesting a significant amount of data, cleaning data, applying machine learning, and so forth. In February 2018, there was an integration between Microsoft Azure and Databricks that provides a better collaboration between data engineers, data scientists, and data analytics. This integration provides data science and data engineering teams with a fast, easy, and collaborative Spark-based platform in Azure [1]. Azure Databricks is a new platform for big data analytics and machine learning. The notebook in Azure Databricks enables data engineers, data scientists, and business analysts to collaborate using a single tool. This chapter gives an overview of what Azure Databricks is, the environment it inhabits, and its use in data science.},
+  year      = {2019},
+}
+
+@Article{Khan2024,
+  author   = {Khan, Bilal and Jan, Saifullah and Khan, Wahab and Chughtai, Muhammad Imran},
+  date     = {2024-01-26},
+  title    = {An Overview of ETL Techniques, Tools, Processes and Evaluations in Data Warehousing},
+  url      = {https://cdn.techscience.cn/files/jbd/2024/TSP_JBD-6/TSP_JBD_46223/TSP_JBD_46223.pdf},
+  priority = {prio1},
+}
+
+@Article{Jaiswal2022,
+  author   = {Nilesh Jaiswal},
+  date     = {2022-12-21},
+  title    = {Data Fusion Basics},
+  url      = {https://medium.com/google-cloud/data-fusion-basic-concepts-c40b09efd695},
+  priority = {prio1},
+}
+
+@InBook{Rawat2019,
+  author    = {Rawat, Sudhir and Narain, Abhishek},
+  booktitle = {Understanding Azure Data Factory: Operationalizing Big Data and Advanced Analytics Solutions},
+  date      = {2018-12-19},
+  title     = {Introduction to Azure Data Factory},
+  doi       = {10.1007/978-1-4842-4122-6_2},
+  isbn      = {978-1-4842-4122-6},
+  pages     = {13--56},
+  publisher = {Apress},
+  url       = {https://doi.org/10.1007/978-1-4842-4122-6_2},
+  abstract  = {In any Big Data or advanced analytics solution, the orchestration layer plays an important role in stitching together the heterogenous environments and operationalizing the workflow. Your overall solution may involve moving raw data from disparate sources to a staging/sink store on Azure, running some rich transform jobs (ELT) on the raw data, and finally generating valuable insights to be published using reporting tools and stored in a data warehouse for access. Azure Data Factory is the extract-transform-load (ETL)/extract-load-transform (ELT) service offered by Microsoft Azure.},
+  address   = {Berkeley, CA},
+  priority  = {prio1},
+  year      = {2019},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}
