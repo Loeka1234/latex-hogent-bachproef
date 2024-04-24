@@ -1,0 +1,3 @@
+Installeer spark-cdm-connector door jar file te importeren in compute, rekening houden met juiste Spark version
+
+Aanmaken van app registration, rechten geven aan app registration, daar credentials van gebruiken (zie https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/data-sources/apache-spark-cdm-connector#options-for-credential-based-access-control)

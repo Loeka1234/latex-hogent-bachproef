@@ -1,0 +1,25 @@
+c2018a1c-9ee2-ed11-a7c7-6045bd905252
+
+3.1 eerste -
+new_syndicalpremiumrequest -> referentiejaar = yearid (2022), EntryDate = op basis van CreatedOn (2023), kalenderjaar = moment van nu (2024)
+new_membership new_yearid moet gelijk zijn met 1 van bovenste 3
+
+3.1 tweede -
+veldje new_idadm in syndicalpremiumrequest moet overeenkomen met new_idadmaux + yearid van new_organizationyear moet hetzelfde zijn als new_yearid van new_syndicalpremium (join?)
+
+
+Resultaat: 1 premie + groepen naar waar hij gestuurd moet worden (groupen distincten)
+Exporteerd: bestand per referentiejaar per groep (die ene premie wordt daar naar geexporteerd)
+
+
+
+Veld GR
+Hoe bepaal ik de GR voor de ene export (groep)? Zelfde vergelijking maar groupid moet ook overeenkomen
+Indien neen: zelfde match terug doen maar dan eentje random pakken als er eentje is
+
+Member en Antheo
+(zit in membershiptabel)
+Bij gevonden membership staat Member (lidnummer) en Anthea-Nummer (kan leeg zijn allemaal)
+OPGEPAST: Member en Antheanummer kunnen values in apparte records hebben
+zorg er voor dat elke membership record een value heeft in lidnummer en anthea-nummer (membership data gaten opkuisen) (membership opdelen in personen en dan gaten opvullen)
+

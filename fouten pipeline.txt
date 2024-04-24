@@ -1,0 +1,17 @@
+Gr niet juist
+PayDate verschilt van uur? Wss timezone verschil tussen adf en databricks? Same bij BirthDay
+AntheaNumber en wss MembershipNumber matchen niet (eerst Gr bekijken)
+
+
+Account wilt ni laden?
+
+
+= Table.RowCount(#"FINAL-ADF")
+= Table.RowCount(#"FINAL-DATABRICKS")
+
+= Table.RemoveMatchingRows(#"FINAL-ADF", Table.ToRecords(#"FINAL-DATABRICKS"), { "Id", "Group", "RefYear", "Remark", "AvalonRemark" })
+
+
+
+
+Toevoegen van filter bij membership

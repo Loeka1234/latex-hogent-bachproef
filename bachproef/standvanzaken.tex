@@ -7,9 +7,9 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
-Bedrijven slaan veel data op. Doordat deze data nuttig kan zijn voor het indentificeren van nieuwe kansen is het belangrijk om deze data klaar te maken voor business analytics. Dit is het proces van verzamelen, organiseren, analyseren en interpreteren van gegevens om inzichten te krijgen. Er kan bijvoorbeeld gekeken worden naar klantgegevens om zo patronen en trends te vinden in het gedrag van de klant.~\autocite{PratibhaKumari2023}
+Bedrijven slaan veel data op. Doordat deze data nuttig kan zijn voor het identificeren van nieuwe kansen is het belangrijk om deze data klaar te maken voor business analytics. Dit is het proces van verzamelen, organiseren, analyseren en interpreteren van gegevens om inzichten te krijgen. Er kan bijvoorbeeld gekeken worden naar klantgegevens om zo patronen en trends te vinden in het gedrag van de klant.~\autocite{PratibhaKumari2023}
 
-Doordat bedrijven vaak werken met veel verschillende soorten data die op verschillende plekken opgeslaan worden is het vaak belangrijk dat deze data eerst opgekuist, getransformeerd en georganiseerd moet worden. Dit is waarbij het implementeren van ETL's en ELT's van pas komt.~\autocite{Inmon2023}
+Doordat bedrijven vaak werken met veel verschillende soorten data dat op verschillende plekken opgeslaan wordt, is het vaak belangrijk dat deze data eerst opgekuist, getransformeerd en georganiseerd moet worden. Dit is waarbij het implementeren van ETL's en ELT's van pas komt.~\autocite{Inmon2023}
 
 \section{Wat zijn ETL's of ELT's?}
 
@@ -33,56 +33,149 @@ Microsoft biedt bijvoorbeeld Azure Data Factory en Azure Databricks aan. Binnen 
 
 Daarnaast biedt Azure ook Azure Databricks aan. Het verschil hierbij is dat de ETL’s worden geïmplementeerd via code terwijl dat bij Azure Data Factory via de UI tools gebeurt. Azure Databricks is gebaseerd op het Apache Spark opensource project. Het grote voordeel is dat het platform het toelaat om makkelijker te kunnen samen werken. Daarnaast is Apache Spark niet enkel gelimiteerd tot het maken van ETL’s maar kan het ook gebruikt worden voor real-time analytics, machine learning, graph processing, etc.~\autocite{Etaati2019}
 
-Daarnaast bieden ook Amazon Web Services (AWS) en Google Cloud Services ETL tools aan. Zo heeft AWS bijvoorbeeld AWS Glue~\autocite{Khan2024} en Google Cloud heeft Google Data Fusion.~\autocite{Jaiswal2022}
+Ook Amazon Web Services (AWS) en Google Cloud Services bieden ETL tools aan. Zo heeft AWS bijvoorbeeld AWS Glue~\autocite{Khan2024} en Google Cloud heeft Google Data Fusion.~\autocite{Jaiswal2022}
 
 \section{Azure Data Factory (ADF)}
 
-Azure Data Factory is een platform-as-a-service (PAAS) voor het implementeren van ETL's en ELT's. Zowel on-premises als cloudgegevensbronnen worden hierbij geondersteund voor het verplaatsen van gegevens.~\autocite{Rawat2019} 
+Azure Data Factory is een platform-as-a-service (PAAS) voor het implementeren van ETL's en ELT's. Zowel on-premises als cloudgegevensbronnen worden hierbij ge ondersteund voor het verplaatsen van gegevens.~\autocite{Rawat2019} 
 
 \subsection{Onderdelen}
 
-Azure Data Factory is opgebouwd uit vijf essentiële onderdelen. 
+Azure Data Factory is opgebouwd uit verschillende onderdelen. Als eerste hebben we een pipeline. Dit is een groep van activiteiten die een reeks processen uitvoert zoals bijvoorbeeld het extraheren of transformeren van gegevens. Een voorbeeld van een activity is een Mapping Data Flow. Hiermee kan men logica voor datatransformaties ontwikkelen zonder code te schrijven. Daarnaast zijn er ook datasets. Dit is een representatie of verwijzing naar de daadwerkelijke gegevens in gegevensopslag. Een dataset is steeds gekoppeld aan een linked service. Deze slaan de informatie op die Azure Data Factory nodig heeft voor het connecteren naar een externe dataopslag. Een pipeline wordt uitgevoerd door een trigger. Er zijn veel verschillende soorten triggers voor veel verschillende soorten events. Daarnaast kan er voor een pipeline parameters gedefinieerd worden. Dit zijn read-only key-value pairs die een configuratie vormen. Ook kunnen er variables gebruikt worden om tijdelijk waardes op te slaan. In combinatie met parameters kunnen dan waardes tussen pipelines, data flows, en andere activities door gegeven worden. Wanneer een pipeline wordt uitgevoerd zal er een pipeline run aangemaakt worden.~\autocite{Microsoft2024a} 
 
-\subsubsection{Pipeline}
+\subsection{Mapping Data Flows}
 
-Een pipeline een groep van activiteiten die een reeks processen uitvoert zoals bijvoorbeeld het extraheren of transformeren van gegevens.
+Met behulp van Mapping Data Flows kunnen ETL's geïmplementeerd worden zonder hiervoor gebruik te moeten maken van code. De resulterende data flows worden uitgevoerd als activities binnen een Azure Data Factory pipeline dat gebruik maakt van Apache Spark Clusters. Deze Mapping Data Flows maken gebruik van data flow scripts. Dit zijn artifacten die gegenereerd worden door de UI. Het is een taal die de data transformatie beschrijft dat de Spark Cluster zal moeten uitvoeren. De UI van Azure Data Factory beheert het data flow script maar het script kan ook bekeken en handmatig bewerkt worden.~\autocite{Kromer2022a}
 
-\subsubsection{Datasets}
-
-Een dataset is een representatie of verwijzing naar de daadwerkelijke gegevens in gegevensopslag.
-
-\subsubsection{Linked Services}
-
-Linked Services slaan de informatie op die Azure Data Factory nodig heeft voor het connecteren naar een externe data-opslag.
-
-\subsubsection{title}
-
-
-
-
-
-
-
-
-Als data engineer krijgt men data in veel verschillende vormen. Het is dus noodzakelijk omdeze data klaar te maken voor business analytics.
-
-Vandaag de dag bestaan er veel verschillende tools voor het implementeren van ETL's en ELT's. 
-
-\label{sec:toepassing-etl}
+In Mapping Data Flows kunnen verschillende soorten transformaties gedaan worden:
 
 \begin{itemize}
-    \item Azure Data Factory
-    \item AWS Glue
-    \item Google Cloud GPC Dataflow
-    
+    \item Multiple inputs/outputs
+    \begin{itemize}
+        \item New Branch
+        \item Join
+        \item Conditional Split
+        \item Exists
+        \item Union
+        \item Lookup
+    \end{itemize}
+    \item Schema modifier
+    \begin{itemize}
+        \item Derived Column
+        \item Select
+        \item Aggregate
+        \item Surrogate Key
+        \item Pivot
+        \item Unpivot
+        \item Window
+        \item Rank
+        \item External Call
+    \end{itemize}
+    \item Formatters
+    \begin{itemize}
+        \item Flatten
+        \item Parse
+        \item Stringify
+    \end{itemize}
+    \item Row modifier
+    \begin{itemize}
+        \item Filter
+        \item Sort
+        \item Alter Row
+        \item Assert
+    \end{itemize}
+    \item Flowlets
+    \begin{itemize}
+        \item Flowlet
+    \end{itemize}
+    \item Destination
+    \begin{itemize}
+        \item Sink
+    \end{itemize}
 \end{itemize}
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+%\subsubsection{Pipeline}
+%
+%Een pipeline een groep van activiteiten die een reeks processen uitvoert zoals bijvoorbeeld het extraheren of transformeren van gegevens.
+%
+%\subsubsection{Datasets}
+%
+%Een dataset is een representatie of verwijzing naar de daadwerkelijke gegevens in gegevensopslag.
+%
+%\subsubsection{Linked Services}
+%
+%Linked Services slaan de informatie op die Azure Data Factory nodig heeft voor het connecteren naar een externe data-opslag.
+%
+%\subsubsection{Activity}
+%
+%Activities representeren een processing step binnen een pipeline. 
+%
+%\subsubsection{Mapping Data Flows}
+%
+%Met datastromen kunnen men logica voor datatransformaties ontwikkelen zonder code te schrijven. De resulterende data flows worden uitgevoerd als activities binnen Azure Data Factory pipelines.
+%
+%\subsubsection{Integration Runtime}
+%
+%Een integration runtime vormt de brug tussen de activity en de gekoppelde service. 
+%
+%\subsubsection{Triggers}
+%
+%Triggers beslissen wanneer een pipeline uitgevoerd moet worden. Er zijn verschillende soorten triggers voor verschillende soorten events. 
+%
+%\subsubsection{Pipeline runs}
+%
+%Een pipeline run is een instance van een pipeline execution. 
+%
+%\subsubsection{Parameters}
+%
+%Parameters zijn read-only key-value pairs die een configuratie vormen. 
+%
+%\subsubsection{Control flow}
+%
+%\subsubsection{Variables}
+%
+%Variables kunnen gebruikt worden in een pipeline om tijdelijk waardes op te slaan. Het kan ook gebruikt worden in combinatie met parameters om waardes tussen pipelines, data flows en andere activities door te geven.
+%
+%Azure IR
+%
+%Self-Hosted IR
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+\section{Azure Databricks}
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+Azure Databricks is een geavanceerd platform voor data-analyse dat zich integreert met Azure services. Het biedt een complete omgeving voor het ontwikkelen, implementeren en delen van krachtige data-analyses en AI-toepassingen op grote schaal. Het integreert zich ook met de opensource-community zoals bijvoorbeeld Delta Lake, Delta Sharing, MLflow, Apache Spark en Redash. Veel voorkomende use cases van Azure Databricks zijn het bouwen van een data lakehouse voor ondernemingen, het implementeren van ETL's, gebruik van machine learning en dergelijke.~\autocite{Microsoft2024}
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+\subsection{Delta Lake}
 
-\lipsum[7-20]
+Delta Lake is het standaard opslagformaat voor alle operaties binnen Azure Databricks. Het maakt gebruik van Parquet data bestanden met een file-based transaction log voor ACID transactions.~\autocite{Microsoft2024c}
+
+\subsection{Delta Live Tables}
+
+Delta Live Tables is een framework voor het bouwen van processing pipelines. Hierbij wordt er gebruik gemaakt van streaming tables en materialized views. Streaming tables zijn Delta tables waarbij er extra support is voor streaming of incremental data processing en materialized views zijn views waarbij de resultaten precomputed zijn.~\autocite{Microsoft2024b}
+
+
+
+
+
+
+%Als data engineer krijgt men data in veel verschillende vormen. Het is dus noodzakelijk omdeze data klaar te maken voor business analytics.
+%
+%Vandaag de dag bestaan er veel verschillende tools voor het implementeren van ETL's en ELT's. 
+%
+%\label{sec:toepassing-etl}
+%
+%\begin{itemize}
+%    \item Azure Data Factory
+%    \item AWS Glue
+%    \item Google Cloud GPC Dataflow
+%    
+%\end{itemize}
+%
+%Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+%
+%Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+%
+%\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+%
+%Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+%
+%\lipsum[7-20]
