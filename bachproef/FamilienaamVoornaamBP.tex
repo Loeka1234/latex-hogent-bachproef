@@ -13,6 +13,8 @@
 
 \usepackage{lipsum} % For blind text, can be removed after adding actual content
 
+\usepackage{listings}
+
 %% Pictures to include in the text can be put in the graphics/ folder
 \graphicspath{{graphics/}}
 
@@ -22,7 +24,7 @@
 %% If you compile with the make_thesis.{bat,sh} script, use the following
 %% import instead:
 %% \usepackage[section,outputdir=../output]{minted}
-\usemintedstyle{solarized-light}
+\usemintedstyle{friendly}
 \definecolor{bg}{RGB}{253,246,227} %% Set the background color of the codeframe
 
 %% Change this line to edit the line numbering style:
@@ -48,7 +50,45 @@
     texcl=false,
 }
 
+\setminted{ %
+    bgcolor=bg,
+    fontfamily=tt,
+    linenos=true,
+    numberblanklines=true,
+    numbersep=5pt,
+    gobble=0,
+    framesep=2mm,
+    funcnamehighlighting=true,
+    tabsize=4,
+    obeytabs=false,
+    breaklines=true,
+    mathescape=false
+    samepage=false,
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+}
+%\setminted[sql]{ %
+%    bgcolor=bg,
+%    fontfamily=tt,
+%    linenos=true,
+%    numberblanklines=true,
+%    numbersep=5pt,
+%    gobble=0,
+%    framesep=2mm,
+%    funcnamehighlighting=true,
+%    tabsize=4,
+%    obeytabs=false,
+%    breaklines=true,
+%    mathescape=false
+%    samepage=false,
+%    showspaces=false,
+%    showtabs =false,
+%    texcl=false,
+%}
+
 % Other packages not already included can be imported here
+\usepackage{float}
 
 %%---------- Document metadata -------------------------------------------------
 % TODO: Replace this with your own information
