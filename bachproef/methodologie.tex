@@ -59,37 +59,40 @@ Op basis van de long list houden we twee mogelijkheden over voor het implementer
 \section{Proof-of-concepts}
 
 
-Binnen Net IT wordt data van Microsoft 365 Customer Engagement geëxporteerd naar naar CSV bestanden en in Azure Data Lake geplaatst. Deze bestanden moeten minstens één keer per dag opgesplitst worden per groep per jaar en zullen moeten doorgestuurd worden naar de klant. Hiervoor moet er dus een ETL of ELT geïmplementeerd worden. Doordat er onderzocht zal worden naar wat de beste mogelijkheid is voor het implementeren van deze ETL of ELT zal er dus een proof-of-concept uitgewerkt worden voor zowel Azure Data Factory en Azure Databricks. Voor het implementeren van deze proof-of-concepts zal er een pipeline gemaakt worden die ook bij de klant gebruikt wordt. Belangrijk hierbij is dat er voor deze bachelorproef gebruik gemaakt zal worden van dummy data.
+Binnen Net IT wordt data van Microsoft 365 Customer Engagement geëxporteerd naar CSV bestanden en in Azure Data Lake geplaatst. Deze bestanden moeten minstens één keer per dag opgesplitst worden per groep per jaar en zullen moeten doorgestuurd worden naar de klant. Hiervoor moet er dus een ETL of ELT geïmplementeerd worden. Doordat er onderzocht wordt naar wat de beste mogelijkheid is voor het implementeren van deze ETL of ELT zal er dus een proof-of-concept uitgewerkt worden voor zowel Azure Data Factory en Azure Databricks. Voor het implementeren van deze proof-of-concepts zal er een pipeline gemaakt worden die ook bij de klant gebruikt wordt. Belangrijk hierbij is dat er voor deze bachelorproef gebruik gemaakt wordt van dummy data.
     
 
-De tabellen uit data lake die gebruikt worden zijn `new\_syndicalpremiumrequest`, `new\_person`, `new\_bankaccount`, `new\_year`, `new\_membership`, `new\_group` en `new\_organizationyear`. Voor zowel Data Factory als Databricks zal er eerst gekeken worden naar hoe deze opgezet kunnen worden. Vervolgens zal er gekeken worden naar hoe er samen gewerkt kan worden en hoe source control geïmplementeerd kan worden. Daarnaast zal er gekeken worden hoe men data kan ophalen uit data lake met behulp van het Common Data Model en zullen de belangrijkste transformaties overlopen worden. Op deze manier kan Data Factory en Databricks makkelijk vergeleken worden.
+De tabellen uit data lake die gebruikt worden zijn ``new\_syndicalpremiumrequest'', ``new\_person'', ``new\_bankaccount'', ``new\_year'', ``new\_membership'', ``new\_group'' en ``new\_organizationyear''. Voor zowel Data Factory als Databricks wordt er eerst gekeken naar hoe deze opgezet kunnen worden. Vervolgens wordt er gekeken hoe er samen gewerkt kan worden en hoe source control geïmplementeerd kan worden. Daarnaast wordt er ook gekeken hoe men data kan ophalen uit data lake met behulp van het Common Data Model en worden de belangrijkste transformaties overlopen. Op deze manier kan Data Factory en Databricks makkelijk vergeleken worden.
     
 
-Er zal steeds gewerkt worden vanuit de tabel `new\_syndicalpremiumrequest`. Dit zijn de premies die geëxporteerd worden vanuit Microsoft 365 Customer Engagement. Deze premies zullen dus opgesplitst worden per groep, per jaar. Voor de pipelines die nu geïmplementeerd worden, worden de premies naar één CSV bestand geëxporteerd. Dit zodat het geëxporteerde CSV bestand van Data Factory dan makkelijk vergeleken kan worden met het geëxporteerde CSV bestand van Databricks.
+Er wordt steeds gewerkt vanuit de tabel ``new\_syndicalpremiumrequest''. Dit zijn de premies die geëxporteerd worden vanuit Microsoft 365 Customer Engagement. Deze premies worden opgesplitst per groep, per jaar. Voor de huidige proof-of-concepts worden deze premies naar slects één CSV bestand geëxporteerd. Dit zodat het geëxporteerde CSV bestand van Data Factory dan makkelijk vergeleken kan worden met het geëxporteerde CSV bestand van Databricks. Het resultaat van de ETL of ELT is dus een CSV bestand waarbij elke rij een premie is, waarbij elke premie een groep en jaartal heeft.
 
 \subsection{Azure Data Factory (ADF)}
 
 \subsubsection{Opzet van resources}
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/initial.png}
-    \footnote{Aanmaken van Azure Data Factory}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/initial.png}
+    \caption{Aanmaken van Azure Data Factory}
+\end{figure}
 
 Door in Microsoft Azure naar Data Factories te navigeren kunnen we een nieuwe data factory gaan aanmaken.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/initial_create.png}
-    \footnote{Configuratie van Azure Data Factory}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/initial_create.png}
+    \caption{Configuratie van Azure Data Factory}
+\end{figure}
 
 % Resource group en subscription in literatuurstudie
-Bij het aanmaken van een data factory moet er een subscription en resource group gekozen worden. Er kan een nieuwe resource group aangemaakt worden of een reeds bestaande gekozen worden. Daarnaast moet er een naam, gewenste regio en versie voor Data Factory gekozen worden. Git configuratie zal later aan bod komen. Data Factory kan nu aangemaakt worden.
+Bij het aanmaken van een data factory moet er een subscription en resource group gekozen worden. Er kan een nieuwe resource group aangemaakt worden of een reeds bestaande gekozen worden. Daarnaast moet er een naam, gewenste regio en versie voor Data Factory gekozen worden. Git configuratie zal later aan bod komen.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/deployment_complete_specific.png}
-    \footnote{Deployment complete van Azure Data Factory}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/deployment_complete_specific.png}
+    \caption{Deployment complete van Azure Data Factory}
+\end{figure}
 
 Wanneer de resource is aangemaakt kan Azure Data Factory opgestart worden.
 
@@ -99,10 +102,11 @@ Binnen Azure Data Factory kan er op 2 manieren samen gewerkt worden.
 
 \textbf{Roles en permissions}
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/adf_contributor.png}
-    \footnote{Toewijzen van Data Factory Contributor Role}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/adf_contributor.png}
+    \caption{Toewijzen van Data Factory Contributor Role}
+\end{figure}
 
 Door de bij de resource group van de data factory de Data Factory Contributor role toe te wijzen kan men toegang geven tot volgende zaken:
 \begin{itemize}
@@ -116,206 +120,229 @@ Door de bij de resource group van de data factory de Data Factory Contributor ro
 
 Azure Data Factory laat het toe om een Git repository te configureren via Azure Repos of GitHub. 
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/setup_repository_2_specific.png}
-    \footnote{Configuratie van Git in Azure Data Factory}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/setup_repository_2_specific.png}
+    \caption{Configuratie van Git in Azure Data Factory}
+\end{figure}
 
 We kiezen voor Azure DevOps doordat er binnen Net IT hiermee gewerkt wordt.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/setup_repository_3_specific.png}
-    \footnote{Configuratie van Azure DevOps in Azure Data Factory}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/setup_repository_3_specific.png}
+    \caption{Configuratie van Azure DevOps in Azure Data Factory}
+\end{figure}
 
-De collaboration branch is de enigste branch waarbij de publish knop zichtbaar zal zijn. Door te werken met feature branches en hiermee pull requests te maken op de collaboration branch kan er dus samen gewerkt worden. De publish branch is de branch waar alle ARM templates van de gepubliceerde factory opgeslaan wordt.
+De collaboration branch is de enigste branch waarbij de publish knop zichtbaar zal zijn. Door te werken met feature branches en hiermee pull requests te maken op de collaboration branch kan er dus samen gewerkt worden. De publish branch is de branch waar alle ARM templates van de gepubliceerde factory opgeslaan worden.
+
+% In literatuurstudie meer uitleg over de collaboration branch
 
 \subsubsection{Ophalen van data uit Azure Data Lake}
 
-Het ophalen van data uit Data Lake in Data Flow zal steeds op dezelfde manier gebeuren. 
+Het ophalen van data uit Data Lake in Data Flow gebeurd steeds op dezelfde manier. 
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_1_specific.png}
-    \footnote{Configuratie van source transformation}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_1_specific.png}
+    \caption{Configuratie van source transformation}
+\end{figure}
 
-Als source type zal er steeds gekozen worden voor inline. Dit doordat we slechts werken met één enkele dataflow en geen gedeelde datasets nodig hebben. Als inline data set type kiezen we voor Common Data Model.
+Als source type wordt er steeds gekozen voor ``inline''. Dit doordat we slechts werken met één enkele dataflow en geen gedeelde datasets nodig hebben. Als inline data set type kiezen we voor Common Data Model.
 
-\begin{center}%
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{./graphics/adf/source_table_2_specific}
     \hspace{0.1\textwidth}
     \includegraphics[width=0.4\textwidth]{./graphics/adf/source_table_3_specific}
-    \footnote{Configuratie van linked service}
-\end{center}
+    \caption{Configuratie van linked service}
+\end{figure}
 
-Er zal éénmalig een Linked Service aangemaakt moeten worden. Hierbij kiezen we voor Azure Data Lake Storage Gen2. We kunnen makkelijk gaan koppelen met de juiste data lake door een Azure Subscription en Storage account name aan te duiden. Door op `Test connection` te klikken kunnen we kijken of de connectie met data lake is gelukt. Door op `Create` te klikken hebben we nu een Linked Service die steeds bij elke Source gebruikt kan worden.
+Er zal éénmalig een Linked Service aangemaakt moeten worden. Hierbij kiezen we voor Azure Data Lake Storage Gen2. We kunnen makkelijk gaan koppelen met de juiste data lake door een Azure Subscription en Storage account name aan te duiden. Door op ``Test connection'' te klikken kunnen we kijken of de connectie met data lake is gelukt. Door op ``Create'' te klikken hebben we nu een Linked Service die steeds bij elke Source gebruikt kan worden.
 
 \textbf{Let op:} Doordat Git geen secrets opslaat is het aanbevolen om gebruik te maken van Azure Key Vault voor het opslaan van connection strings of passwords.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_4_specific.png}
-    \footnote{Configuratie van source options}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_4_specific.png}
+    \caption{Configuratie van source options}
+\end{figure}
 
-Door naar `Source options` te gaan kunnen we `Model.json` gaan aanduiden. Door op `Browse` te klikken kunnen we aanduiden waar het Model.json bestand te vinden is in data lake.
+Door naar ``Source options'' te navigeren kan ``Model.json'' aangeduid worden. Door hierna op ``Browse'' te klikken kan er aangeduid worden waar het Model.json bestand te vinden is in data lake. Dit JSON bestand beschrijft hoe de data in Data Lake er uit ziet.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_5_specific.png}
-    \footnote{Configuratie van source options}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_5_specific.png}
+    \caption{Configuratie van source options}
+\end{figure}
 
-Naast `Entity` kunnen we nu op `Browse` klikken om de gewenste entity te gaan importeren. Let op: hier voor zal Data flow debug aan moeten staan.
+De gewenste entiteit kan nu geselecteerd worden door op ``Browse'' naast ``Entity'' te klikken. Let op: hier voor zal Data flow debug aan moeten staan.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_6_specific.png}
-    \footnote{Configuratie van projection}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_6_specific.png}
+    \caption{Importen van schema voor data flow source}
+\end{figure}
 
-Door naar `Projection` te gaan kunnen we nu op `Import schema` klikken.
+Onder ``Projection'' kan er nu op ``Import schema'' geklikt worden om de verschillende kolommen met bijhorende types op te halen.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_7_specific.png}
-    \footnote{Configuratie van projection}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_7_specific.png}
+    \caption{Voorbeeld geïmporteerd schema van data flow source}
+\end{figure}
 
 De foto hierboven toont een voorbeeld van een geïmporteerd schema.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/source_table_8_specific.png}
-    \footnote{Data preview}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/source_table_8_specific.png}
+    \caption{Data preview in data flow}
+\end{figure}
 
-Wanneer we naar `Data preview` gaan kunnen we een preview zien van de data uit de gekozen tabel.
+Door naar ``Data preview'' te navigeren kan men een preview zien van de data uit de gekozen tabel. Bij elke transformatie die er in data flow gebeurd kan dit preview tab gebruikt worden.
 
 \subsubsection{Belangrijkste transformaties}
 
 \textbf{Determinatie van welke groepen de premie in hun bestand krijgen}
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_1.png}
-    \footnote{Join van de tabel `new\_year` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_1.png}
+    \caption{Join van de tabel ``new\_year'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-De tabel `new\_syndicalpremiumrequest` heeft een kolom `spr\_new\_yearid`. Om te gaan bepalen wat het referentiejaar van deze premie is zal dus de tabel `new\_year` op de tabel `new\_syndicalpremiumrequest` gejoind moeten worden aan de hand van dit id.
+De tabel ``new\_syndicalpremiumrequest'' heeft een kolom ``spr\_new\_yearid''. Om te gaan bepalen wat het referentiejaar van deze premie is zal dus de tabel ``new\_year'' op de tabel ``new\_syndicalpremiumrequest'' gejoind moeten worden aan de hand van dit id.
 
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_2.png}
-    \footnote{Derive EntryYear, CalendarYear en RefYear op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_2.png}
+    \caption{Derive ``EntryYear'', ``CalendarYear'' en ``RefYear'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Voor het groepen moeten hebben we 3 nieuwe kolommen nodig. Als eerste hebben we het EntryYear nodig, dit is het jaartal van `spr\_createdon`, de datum wanneer de record is aangemaakt. Daarnaast hebben we CalendarYear nodig, dit is het jaartal van de huidige datum. En ten slotte hebben we RefYear nodig, dit is het jaartal van de tabel `new\_year` die net gejoind is geweest.
+Voor het bepalen van de groepen hebben we 3 nieuwe kolommen nodig. Als eerste hebben we het EntryYear nodig, dit is het jaartal van ``spr\_createdon'', de datum wanneer de record is aangemaakt. Daarnaast hebben we CalendarYear nodig, dit is het jaartal van de huidige datum. En ten slotte hebben we RefYear nodig, dit is het jaartal van de tabel ``new\_year'' die net gejoind is geweest.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_3.png}
-    \footnote{Hernoemen van `new\_syndicalpremiumrequest` kolommen en splitsing in twee apparte branches}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_3.png}
+    \caption{Hernoemen van kolommen op ``new\_syndicalpremiumrequest'' en splitsing in twee apparte branches}
+\end{figure}
 
 Vervolgens worden bepaalde kolommen van naam hernoemt. Welke kolommen dit zijn is onbelangrijk voor deze transformatie. Wat wel belangrijk is dat de pipeline zich nu opsplitst in twee apparte branches. Dit doordat er 2 inner joins zullen gebeuren.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_4.png}
-    \footnote{Inner join van `new\_organizationyear` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_4.png}
+    \caption{Inner join van ``new\_organizationyear'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Er gebeurt nu een inner join van de tabel `new\_organizationyear` op de tabel `new\_syndicalpremiumrequest`. Hierbij wordt er aan de hand van IDADM en het id van het referentiejaar gejoind.
+Er gebeurt nu een inner join van de tabel ``new\_organizationyear'' op de tabel ``new\_syndicalpremiumrequest''. Hierbij wordt er aan de hand van IDADM en het id van het referentiejaar gejoind.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_5.png}
-    \footnote{Selecteren en hernoemen van kolommen op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_5.png}
+    \caption{Selecteren en hernoemen van kolommen op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Vervolgens worden alle kolommen die er voor de join waren geselecteerd. Daarnaast wordt er één kolom `noy\_new\_groupid` geselecteerd en hernoemd naar `Group`.
+Vervolgens worden alle kolommen, die er voor de join waren, geselecteerd. Daarnaast wordt er één kolom ``noy\_new\_groupid'' geselecteerd en hernoemd naar ``Group''.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_6.png}
-    \footnote{Custom (cross) join van `new\_membership` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_6.png}
+    \caption{Custom (cross) join van ``new\_membership'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Bij de tweede branch wordt de tabel `new\_membership` gejoind op de tabel `new\_syndicalpremiumrequest`. Er wordt gebruik gemaakt van een custom (cross) join doordat er OR condities worden gebruikt. 
+Bij de tweede branch wordt de tabel ``new\_membership'' gejoind op de tabel ``new\_syndicalpremiumrequest''. Er wordt gebruik gemaakt van een custom (cross) join doordat er OR condities gebruikt worden. Doordat dit een custom (cross) join is met condities, zal deze join werken net zoals een inner join. 
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_7.png}
-    \footnote{Conditie van de custom (cross) join van `new\_membership` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{minted}{text}
+(CalendarYear == membership_new_year || EntryYear == membership_new_year || RefYear == membership_new_year) && spr_new_personid == membership_new_personid
+\end{minted}
 
 In de conditie van de custom (cross) join wordt er vergeleken of CalendarYear, EntryYear of RefYear overeenkomt met het jaartal van de membership. Daarnaast wordt er ook gekeken of personid overeen komt.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_8.png}
-    \caption{Selecteren en hernoemen van kolommen op de tabel `new\_syndicalpremiumrequest`}
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_8.png}
+    \caption{Selecteren en hernoemen van kolommen op de tabel ``new\_syndicalpremiumrequest''}
     \label{fig:bepalengroep}
 \end{figure}
 
-Ook na deze join worden alle kolommen die er voor de join waren geselecteerd. Daarnaast wordt er 1 kolom `membership\_new\_groupid` geselecteerd en hernoemd naar `Group`. Ten slotte wordt de kolom `ng\_new\_groupprefix` geselecteerd maar dit heeft te maken met een andere transformatie.
-
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/bepalen_groep_9.png}
-    \footnote{Union van twee branches}
-\end{center}
-
-Beide branches hebben nu dezelfde kolommen met een extra kolom `Group`. Daarnaast heeft de onderste branch nog één extra kolom `ng\_new\_groupprefix`. De beide branches worden nu samen gevoegd met behulp van een union. De bovenste branch die de kolom `ng\_new\_groupprefix` niet heeft zal voor deze kolom de waarde `NULL` krijgen in de records komende van deze branch. 
+Ook na deze join worden alle kolommen die er voor de join waren geselecteerd. Daarnaast wordt er 1 kolom ``membership\_new\_groupid'' geselecteerd en hernoemd naar ``Group''. Ten slotte wordt de kolom ``ng\_new\_groupprefix'' geselecteerd maar dit heeft te maken met een andere transformatie.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/group_by_1.png}
-    \caption{Group by `spr\_Id`, `Group` en `RefYear` in `new\_syndicalpremiumrequest`}
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/bepalen_groep_9.png}
+    \caption{Union van twee branches}
+\end{figure}
+
+Beide branches hebben nu dezelfde kolommen met een extra kolom ``Group''. Daarnaast heeft de onderste branch nog één extra kolom ``ng\_new\_groupprefix''. De beide branches worden nu samen gevoegd met behulp van een union. De bovenste branch die de kolom ``ng\_new\_groupprefix'' niet heeft zal voor deze kolom de waarde ``NULL'' krijgen in de records komende van deze branch. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/group_by_1.png}
+    \caption{Group by ``spr\_Id'', ``Group'' en ``RefYear'' in ``new\_syndicalpremiumrequest''}
     \label{fig:groupby}
 \end{figure}
 
 Om te voorkomen dat een premie twee keer in het zelfde bestand terecht komt voor een bepaalde groep en referentiejaar zal er op het einde van de pipeline geaggregeerd worden op basis van id van de premie, groep en referentiejaar.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/group_by_2.png}
-    \footnote{Group by `spr\_Id`, `Group` en `RefYear` in `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/group_by_2.png}
+    \caption{Group by ``spr\_Id'', ``Group'' en ``RefYear'' in ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/adf/group_by_3.png}
-    \footnote{Group by `spr\_Id`, `Group` en `RefYear` in `new\_syndicalpremiumrequest`}
-\end{center}
+\begin{minted}{text}
+name != "spr_Id" && name != "Group" && name != "RefYear"
+\end{minted}
 
-Voor alle kolommen behalve de kolommen die in de `Group by` gebruikt worden zal de aggregatiefunctie `first` gebruikt worden. De tweede parameter `true()` wordt gebruikt om aan te geven dat NULL waardes genegeerd moeten worden. Dit zal dus resulteren in de eerste waarde die niet NULL is van de kolom groep. Indien alle waardes NULL zijn zal dit wel in NULL resulteren.
+Voor alle kolommen behalve de kolommen die in de ``Group by'' gebruikt worden zal de aggregatiefunctie ``first'' gebruikt worden. De tweede parameter ``true()'' wordt gebruikt om aan te geven dat ``NULL'' waardes genegeerd moeten worden. Dit zal dus resulteren in de eerste waarde die niet ``NULL'' is van de kolom groep. Indien alle waardes ``NULL'' zijn zal dit wel in ``NULL'' resulteren.
 
 
 % TODO group by uitleggen
 
-\textbf{Bepalen van de kolom `Gr` voor een premie}
+\pagebreak
 
-\begin{center}
-    \includegraphics[width=0.9\textwidth]{./graphics/adf/gr_1.png}
-    \footnote{Joinen van de tabel `new\_membership` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+\textbf{Bepalen van de kolom ``Gr'' voor een premie}
 
-De tabel `new\_membership` wordt gejoind op de tabel `new\_syndicalpremiumrequest`. Dit gebeurd aan de hand van `new\_personid` en het kalenderjaar van de premie.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/gr_1.png}
+    \caption{Joinen van de tabel ``new\_membership'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-\begin{center}
-    \includegraphics[width=0.9\textwidth]{./graphics/adf/gr_2.png}
-    \footnote{Selecteren van de juiste kolommen in `new\_syndicalpremiumrequest`}
-\end{center}
+De tabel ``new\_membership'' wordt gejoind op de tabel ``new\_syndicalpremiumrequest''. Dit gebeurd aan de hand van ``new\_personid'' en het kalenderjaar van de premie.
 
-De kolommen die reeds bestonden voor de join worden geselecteerd. Daarnaast wordt de kolom `ng\_new\_groupprefix` geselecteerd en hernoemd naar `Gr\_by\_calendar\_year`.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/adf/gr_2.png}
+    \caption{Selecteren van de juiste kolommen in ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-\begin{center}
+De kolommen die reeds bestonden voor de join worden geselecteerd. Daarnaast wordt de kolom ``ng\_new\_groupprefix'' geselecteerd en hernoemd naar ``Gr\_by\_calendar\_year''.
+
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/gr_3.png}
-    \footnote{Herhalen van transformaties}
-\end{center}
+    \caption{Herhalen van transformaties}
+\end{figure}
 
-Dezelfde transformaties gebeuren maar deze keer aan de hand van `EntryYear`. Ook hier worden de reeds bestaande kolommen geselecteerd en wordt de nieuwe kolom `ng\_new\_groupprefix` hernoemd naar `Gr\_by\_EntryYear`.
+Dezelfde transformaties gebeuren opnieuw maar deze keer aan de hand van ``EntryYear''. Ook hier worden de reeds bestaande kolommen geselecteerd en wordt de nieuwe kolom ``ng\_new\_groupprefix'' hernoemd naar ``Gr\_by\_EntryYear''.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/gr_4.png}
-    \footnote{Herhalen van transformaties}
-\end{center}
+    \caption{Herhalen van transformaties}
+\end{figure}
 
-Ook voor `RefYear` zullen deze transformaties gebeuren, resulterend in een nieuwe kolom `Gr\_by\_NewYear`.
+Ook voor ``RefYear'' zullen deze transformaties gebeuren, resulterend in een nieuwe kolom ``Gr\_by\_RefYear''.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/gr_5.png}
-    \footnote{Bepalen van `Gr` in `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Bepalen van ``Gr'' in ``new\_syndicalpremiumrequest''}
+\end{figure}
 
 We hebben nu een group prefix reeds komende uit een andere transformatie \ref{fig:bepalengroep} en group prefixes komende uit de joins die we hebben uitgevoerd.
 
@@ -323,63 +350,72 @@ We hebben nu een group prefix reeds komende uit een andere transformatie \ref{fi
 iif(!isNull(ng_new_groupprefix), ng_new_groupprefix, 
     iif(!isNull(Gr_by_calendar_year), Gr_by_calendar_year,
         iif(!isNull(Gr_by_EntryYear), Gr_by_EntryYear,
-            iif(!isNull(Gr_by_NewYear), Gr_by_NewYear, toString(null())))))
+            iif(!isNull(Gr_by_NewYear), Gr_by_RefYear, toString(null())))))
 \end{minted}
 
-Om de kolom `Gr` te bepalen zal er gezocht worden naar de eerste kolom die niet NULL is startende van uit `ng\_new\_groupprefix` waarbij er vervolgens gekeken wordt naar `Gr\_by\_calendaryear`, `Gr\_by\_EntryYear` en `Gr\_by\_NewYear`.
+Om de kolom ``Gr'' te bepalen zal er gezocht worden naar de eerste kolom die niet ``NULL'' is startende van uit ``ng\_new\_groupprefix'' waarbij er vervolgens gekeken wordt naar ``Gr\_by\_calendar\_year'', `Gr\_by\_EntryYear` en `Gr\_by\_NewYear`.
 
 Ook voor deze transformatie is het belangrijk dat er geaggregeerd wordt zoals bij Figuur \ref{fig:groupby} om te voorkomen dat dezelfde premie twee keer in een groep voor een bepaald jaartal terecht komt.
 
-\textbf{Bepalen van de kolommen `AntheaNumber` en `MembershipNumber` voor een premie}
+\pagebreak
 
-\begin{center}
+\textbf{Bepalen van de kolommen ``AntheaNumber'' en ``MembershipNumber'' voor een premie}
+
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_1.png}
-    \footnote{Conditional split op `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Conditional split op ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-De pipeline zal splitten in twee branches met behulp van een conditional split. Alle rijen waarbij de kolom `Gr` NULL is zullen boven verder gaan. Alle rijen waarbij de kolom `Gr` niet NULL is zullen onderaan verder gaan.
+De pipeline zal splitten in twee branches met behulp van een conditional split. Alle rijen waarbij de kolom ``Gr'', ``NULL'' is, zullen boven verder gaan. Alle rijen waarbij de kolom ``Gr'', niet ``NULL'', is zullen onderaan verder gaan.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_2.png}
-    \footnote{Derive `AntheaNumber` en `MembershipNumber` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Derive ``AntheaNumber'' en ``MembershipNumber'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Voor de rijen waarbij de kolom `Gr` NULL was zullen de kolommen `AntheaNumber` en `MembershipNumber` ook NULL zijn.
+Voor de rijen waarbij de kolom ``Gr'', ``NULL'' was, zullen de kolommen ``AntheaNumber'' en ``MembershipNumber'' ook NULL zijn.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_3.png}
-    \footnote{Join van de tabel `new\_membership` op de tabel `new\_syndicalpremiumrequest` aan de hand van `new\_groupid`, `new\_personid` en `CalendarYear`}
-\end{center}
+    \caption{Join van de tabel ``new\_membership'' op de tabel ``new\_syndicalpremiumrequest'' aan de hand van ``new\_groupid'', ``new\_personid'' en ``CalendarYear''}
+\end{figure}
 
-Voor de rijen waarbij de kolom `Gr` niet NULL was zal de tabel `new\_membership` gejoind worden. Hierbij wordt er gebruik gemaakt van `group\_id`, `new\_personid` en `CalendarYear`.
+Voor de rijen waarbij de kolom ``Gr'' niet ``NULL'' was zal de tabel ``new\_membership'' gejoind worden. Hierbij wordt er gebruik gemaakt van ``group\_id'', ``new\_personid'' en ``CalendarYear''.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_4.png}
-    \footnote{Select op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Select op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-Alle kolommen die er voor de join waren zullen opnieuw geselecteerd worden. Daarnaast worden `membership\_new\_antheanumber` en `membership\_new\_newmembershipnumber` geselecteerd en hernoemd naar `antheanumber\_first` en `membershipnumber\_first`.
+Alle kolommen die er voor de join waren zullen opnieuw geselecteerd worden. Daarnaast worden ``membership\_new\_antheanumber'' en ``membership\_new\_newmembershipnumber'' geselecteerd en hernoemd naar ``antheanumber\_first'' en ``membershipnumber\_first''.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_5.png}
-    \footnote{Join van de tabel `new\_membership` op de tabel `new\_syndicalpremiumrequest` aan de hand van `new\_groupid`, `new\_personid` en `EntryYear`}
-\end{center}
+    \caption{Join van de tabel ``new\_membership'' op de tabel ``new\_syndicalpremiumrequest'' aan de hand van ``new\_groupid'', ``new\_personid'' en ``EntryYear''}
+\end{figure}
 
-De vorige twee transformatie gebeuren opnieuw maar deze keer wordt er gebruik gemaakt van `EntryYear` in plaats van `CalendarYear`.
+De vorige twee transformatie gebeuren opnieuw maar deze keer wordt er gebruik gemaakt van ``EntryYear'' in plaats van ``CalendarYear''. Daarnaast worden de kolommen ``membership\_new\_antheanumber'' en ``membership\_new\_newmembershipnumber'' deze keer hernoemd naar ``antheanumber\_second'' en ``membershipnumber\_second''.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_6.png}
-    \footnote{Join van de tabel `new\_membership` op de tabel `new\_syndicalpremiumrequest` aan de hand van `new\_groupid`, `new\_personid` en `RefYear`}
-\end{center}
+    \caption{Join van de tabel ``new\_membership'' op de tabel ``new\_syndicalpremiumrequest'' aan de hand van ``new\_groupid'', ``new\_personid'' en ``RefYear''}
+\end{figure}
 
-Ook zal voor `RefYear` in plaats van `CalendarYear` deze transformaties opnieuw gebeuren.
+Ook zal voor ``RefYear'' in plaats van ``CalendarYear'' deze transformaties opnieuw gebeuren. Deze keer met de kolommen ``antheanumber\_third'' en ``membershipnumber\_third'' als resultaat.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_7.png}
-    \footnote{Derive van kolommen `AntheaNumber` en `MembershipNumber` op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Derive van kolommen ``AntheaNumber'' en ``MembershipNumber'' op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
-De kolommen `AntheaNumber` en `MembershipNumber` worden nu berekent.
+De kolommen ``AntheaNumber'' en ``MembershipNumber'' worden nu berekent.
 
 \begin{minted}{text}
 iif(!isNull(antheanumber_first), antheanumber_first,      
@@ -387,7 +423,7 @@ iif(!isNull(antheanumber_first), antheanumber_first,
         iif(!isNull(antheanumber_third), antheanumber_third, toString(null()))))
 \end{minted}
 
-Wanneer het antheanummer van de eerste join niet NULL is zal deze gebruikt worden, anders zal er gekeken worden of de tweede niet NULL is. Als de tweede NULL is zal de derde gebruikt worden. Indien de derde ook NULL is zal dit resulteren in NULL als waarde voor de kolom `AntheaNumber`.
+Wanneer het antheanummer van de eerste join niet ``NULL'' is zal deze gebruikt worden, anders zal er gekeken worden of de tweede niet ``NULL'' is. Als de tweede ``NULL'' is zal de derde gebruikt worden. Indien de derde ook ``NULL'' is zal dit resulteren in ``NULL'' als waarde voor de kolom ``AntheaNumber''.
 
 \begin{minted}{text}
 iif(!isNull(membershipnumber_first), membershipnumber_first, 
@@ -395,19 +431,20 @@ iif(!isNull(membershipnumber_first), membershipnumber_first,
         iif(!isNull(membershipnumber_third), membershipnumber_third, toString(null()))))
 \end{minted}
 
-Ook de kolom `MembershipNumber` wordt op dezelfde manier berekent.
+Ook de kolom ``MembershipNumber'' wordt op dezelfde manier berekent.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_8.png}
-    \footnote{Verwijderen van onnodige kolommen op de tabel `new\_syndicalpremiumrequest`}
-\end{center}
+    \caption{Verwijderen van onnodige kolommen op de tabel ``new\_syndicalpremiumrequest''}
+\end{figure}
 
 De kolommen die niet nodig zijn worden verwijderd.
 
-\begin{center}
+\begin{figure}[H]
     \includegraphics[width=0.9\textwidth]{./graphics/adf/member_9.png}
-    \footnote{Union van twee streams}
-\end{center}
+    \caption{Union van twee streams}
+\end{figure}
 
 Beide streams worden nu samen gevoegd met behulp van een union.
 
@@ -417,207 +454,234 @@ En ten slotte is het ook voor deze transformatie belangrijk dat er geaggregeerd 
 
 \subsubsection{Opzet van resources}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/initial_1.png}
-    \footnote{Aanmaken van Azure Databricks}
-\end{center}
+    \caption{Aanmaken van Azure Databricks}
+\end{figure}
 
-Door in Microsoft Azure naar Databricks te navigeren kunnen we een nieuwe Azure Databricks workspace gaan aanmaken.
+Door in Microsoft Azure naar Databricks te navigeren kan er een nieuwe Azure Databricks workspace aangemaakt worden.
 
-\begin{center}
-    \includegraphics[width=0.6\textwidth]{./graphics/databricks/initial_2.png}
-    \footnote{Configuratie van Azure Databricks}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./graphics/databricks/initial_2.png}
+    \caption{Configuratie van Azure Databricks}
+\end{figure}
 
-Bij het aanmaken van databricks moet er een subscription en resource group gekozen worden. Er kan een nieuwe resource group aangemaakt worden of een reeds bestaande gekozen worden. Daarnaast moet er een naam, gewenste regio en pricing tier gekozen worden. Als pricing tier kiezen we hier voor Standard doordat we geen gebruik gaan maken van Premium features. Ten slotte kan er ook een Managed Resource Group name gekozen worden. Deze resource group houdt alle resource bij die databricks nodig heeft, zoals bijvoorbeeld virtual machines, storage accounts en virtual networks.
+Bij het aanmaken van databricks moet er een subscription en resource group gekozen worden. Er kan een nieuwe resource group aangemaakt worden of een reeds bestaande gekozen worden. Daarnaast moet er een naam, gewenste regio en pricing tier gekozen worden. Als pricing tier kiezen we hier voor ``Standard'' doordat we geen gebruik gaan maken van Premium features. Ten slotte kan er ook een Managed Resource Group name gekozen worden. Deze resource group houdt alle resource bij die databricks nodig heeft, zoals bijvoorbeeld virtual machines, storage accounts en virtual networks.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.6\textwidth]{./graphics/databricks/initial_3.png}
-    \footnote{Deployment complete van Azure Databricks}
-\end{center}
+    \caption{Deployment complete van Azure Databricks}
+\end{figure}
 
 Wanneer de resource is aangemaakt kan Azure Databricks opgestart worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/initial_4.png}
-    \footnote{Aanmaken van compute resource}
-\end{center}
+    \caption{Aanmaken van compute resource}
+\end{figure}
 
-Voor we notebooks en jobs gaan kunnen uitvoeren zullen we eerst een compute resource moeten gaan aanmaken.
+Voordat notebooks en jobs uitgevoerd kunnen worden zal er eerst een compute resource aangemaakt moeten worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.6\textwidth]{./graphics/databricks/initial_5.png}
-    \footnote{Configuratie van compute resource}
-\end{center}
+    \caption{Configuratie van compute resource}
+\end{figure}
 
-De databricks runtime version moet op 11.3 LTS gezet worden zodat we Apache Spark 3.3.0 kunnen gebruiken. Dit omdat we gebruik gaan maken van `spark-cdm-connector`. Ook hebben we ingesteld dat de cluster zichzelf zal uitschakelen na 60 minuten om onnodige kosten te voorkomen.
+De databricks runtime version moet op 11.3 LTS gezet worden zodat we Apache Spark 3.3.0 kunnen gebruiken. Dit omdat we gebruik gaan maken van ``spark-cdm-connector''. Ook hebben we ingesteld dat de cluster zichzelf zal uitschakelen na 60 minuten om onnodige kosten te voorkomen.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/initial_6.png}
-    \footnote{Installatie van `spark-cdm-connector`}
-\end{center}
+    \caption{Installatie van ``spark-cdm-connector''}
+\end{figure}
 
-Ten slotte moet de \href{https://github.com/Azure/spark-cdm-connector/releases/tag/spark3.3-1.19.5}{jar file} van `spark-cdm-connector` geïnstalleerd worden in het aangemaakte compute resource om gebruik te kunnen maken van het Common Data Model in onze pipeline.
+Ten slotte moet de \href{https://github.com/Azure/spark-cdm-connector/releases/tag/spark3.3-1.19.5}{jar file} van ``spark-cdm-connector'' geïnstalleerd worden in het aangemaakte compute resource om gebruik te kunnen maken van het Common Data Model in onze pipeline.
 
 \subsubsection{Collaboration en source control}
 
 \textbf{Management en permissions}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/management_permissions_1.png}
-    \footnote{Gebruikers toevoegen/verwijderen in Azure Databricks}
-\end{center}
+    \caption{Gebruikers toevoegen/verwijderen in Azure Databricks}
+\end{figure}
 
 Gebruikers die behoren tot het AAD directory van de Azure Databricks environment kunnen makkelijk toegevoegd worden met behulp van het e-mailadres van de gebruiker.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.6\textwidth]{./graphics/databricks/management_permissions_2.png}
-    \footnote{Rechten wijzigen van gebruikers in Azure Databricks}
-\end{center}
+    \caption{Rechten wijzigen van gebruikers in Azure Databricks}
+\end{figure}
 
 Rechten van gebruikers kunnen gewijzigd worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/management_permissions_3.png}
-    \footnote{Groepen toevoegen of verwijderen in Azure Databricks}
-\end{center}
+    \caption{Groepen toevoegen of verwijderen in Azure Databricks}
+\end{figure}
 
 Er kunnen groepen toegevoegd of verwijderd worden aan Azure Databricks. Gebruikers kunnen dan aan deze groepen toegevoegd worden. Dit vereenvoudigt het om toegang toe te wijzen aan werkruimten, gegevens en andere objecten.
+
+\pagebreak
 
 \textbf{Source control}
 
 Databricks folders is een visuele Git client binnen Azure Databricks om gebruik te kunnen maken van source control.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/git_1.png}
-    \footnote{Clone Git repository in Databricks folders}
-\end{center}
+    \caption{Clone Git repository in Databricks folders}
+\end{figure}
 
 Het geeft de optie om verschillende Git providers te gaan gebruiken. Doordat er binnen Net IT gewerkt wordt met Azure DevOps Services zal hier voor gekozen worden.
 
-\begin{center}
+\begin{figure}[H]
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/git_2.png}
-    \footnote{Aanmaken van een notebook in databricks}
-\end{center}
+    \caption{Aanmaken van een notebook in databricks}
+\end{figure}
 
 Ter illustratie zal er een voorbeeld notebook aangemaakt worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/git_3.png}
-    \footnote{Commit en push in Databricks}
-\end{center}
+    \caption{Commit en push in Databricks}
+\end{figure}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/git_4.png}
-    \footnote{Commit en push in Databricks}
-\end{center}
+    \caption{Commit en push in Databricks}
+\end{figure}
 
 Deze notebook kan dan gecommit worden naar Git.
 
 \subsubsection{Ophalen van data uit Azure Data Lake}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_1.png}
-    \footnote{App registration aanmaken}
-\end{center}
+    \caption{App registration aanmaken}
+\end{figure}
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_2.png}
-    \footnote{Configuratie app registration}
-\end{center}
+    \caption{Configuratie app registration}
+\end{figure}
 
-Door in Microsoft Azure naar `App registrations` te navigeren kunnen we een nieuwe app registration aanmaken.
+Door in Microsoft Azure naar ``App registrations'' te navigeren kan er een nieuwe app registration aanmaken.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_3.png}
-    \footnote{Aanmaken client secret}
-\end{center}
+    \caption{Aanmaken client secret}
+\end{figure}
 
-Door naar `Certificates \& secrets` in de app registration te navigeren kunnen we een client secret gaan aanmaken. Het is belangrijk om deze client secret op te slaan.
+Door naar ``Certificates \& secrets'' in de app registration te navigeren kan er een client secret aangemaakt worden. Het is belangrijk om deze client secret op te slaan.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_4.png}
-    \footnote{Role assignment toevoegen aan storage account}
-\end{center}
+    \caption{Role assignment toevoegen aan storage account}
+\end{figure}
 
-Wanneer we nu naar `Access Control (IAM)` navigeren van het storage account waarmee we een connectie willen maken kunnen we nu een role assignment gaan toevoegen.
+Door naar``Access Control (IAM)'' te navigeren van het storage account waarmee we een connectie willen maken, kunnen we nu een role assignment gaan toevoegen.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_5.png}
-    \footnote{Job function role kiezen voor role assignment}
-\end{center}
+    \caption{Job function role kiezen voor role assignment}
+\end{figure}
 
-Als job function role kiezen we voor `Storage Blob Data Contributor`.
+Als job function role moet er voor ``Storage Blob Data Contributor'' gekozen worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_6.png}
-    \footnote{Members kiezen voor role assignment}
-\end{center}
+    \caption{Members kiezen voor role assignment}
+\end{figure}
 
-Bij `Members` kiezen we voor de service principal die we net hebben aangemaakt.
+Bij ``Members'' kiezen we voor de service principal die we net hebben aangemaakt. Dit zorgt er voor dat de app registration die we net hebben aangemaakt toegang heeft tot het data lake.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_7.png}
-    \footnote{Key vault aanmaken}
-\end{center}
+    \caption{Key vault aanmaken}
+\end{figure}
 
-Door in Microsoft Azure naar `Key vaults` te navigeren kunnen we een nieuwe key vault gaan aanmaken.
+Doordat we de client secret die we net hebben aangemaakt niet in onze databricks code willen zetten zal er een key vault aangemaakt worden. Dit kan door in Microsoft Azure naar ``Key vaults'' te navigeren.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_8.png}
-    \footnote{Configuratie van key vault}
-\end{center}
+    \caption{Configuratie van key vault}
+\end{figure}
 
 Bij het aanmaken van een key vault moet er een subscription en resource group gekozen worden. Er kan een nieuwe resource group aangemaakt worden of een reeds bestaande gekozen worden. Daarnaast moet er een naam, gewenste regio en pricing tier gekozen worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_9.png}
-    \footnote{Permission model van key vault}
-\end{center}
+    \caption{Permission model van key vault}
+\end{figure}
 
-Onder `Access configuration` kiezen we voor `Vault access policy` als permission model.
+Onder ``Access configuration'' wordt er gekozen voor ``Vault access policy'' als permission model.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_10.png}
-    \footnote{Networking configuratie van key vault}
-\end{center}
+    \caption{Networking configuratie van key vault}
+\end{figure}
 
-Er kan gekozen worden om enkel geselecteerde networks public access te geven of om public access uit te schakelen. Belangrijk is dat `Allow trusted Microsoft services to bypass this firewall` aangevinkt staat.
+Er kan gekozen worden om enkel geselecteerde networks public access te geven of om public access uit te schakelen. Belangrijk is dat ``Allow trusted Microsoft services to bypass this firewall'' aangevinkt staat.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_11.png}
-    \footnote{Deployment complete van key vault}
-\end{center}
+    \caption{Deployment complete van key vault}
+\end{figure}
 
 Wanneer onze resource aangemaakt is kunnen we naar de key vault navigeren.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_12.png}
-    \footnote{Toevoegen van een secret in key vault}
-\end{center}
+    \caption{Toevoegen van een secret in key vault}
+\end{figure}
 
-Door naar `Secrets` te navigeren in de key vault kunnen we nu onze client secret toevoegen.
+Door naar ``Secrets'' te navigeren in de key vault kan het client secret toegevoegd worden.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_13.png}
-    \footnote{Opzoeken van properties van key vault}
-\end{center}
+    \caption{Opzoeken van properties van key vault}
+\end{figure}
 
-Door naar `Properties` te navigeren kunnen we nu `Vault URI` en `Resource ID` vinden. Deze zijn belangrijk voor de volgende stap.
+Door naar ``Properties'' te navigeren kunnen we nu ``Vault URI'' en ``Resource ID'' terugvinden. Deze zijn belangrijk voor de volgende stap.
 
-\begin{center}
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_14.png}
-    \footnote{Aanmaken van secret scope in databricks}
-\end{center}
+    \caption{Aanmaken van secret scope in databricks}
+\end{figure}
 
-Door naar `https://<databricks-instance>\#secrets/createScope` te navigeren kunnen we nu een secret scope aanmaken in databricks. Hiervoor hebben we `Vault URI` en `Resource ID` nodig uit de vorige stap.
+Door naar ``https://<databricks-instance>\#secrets/createScope'' te navigeren kunnen we nu een secret scope aanmaken in databricks. Hiervoor hebben we ``Vault URI'' en ``Resource ID'' nodig uit de vorige stap.
 
-\begin{center}
-    \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_15.png}
-    \footnote{Ophalen van secrets uit key vault}
-\end{center}
+\begin{minted}{python}
+app_key = dbutils.secrets.get(scope = "KeyVault", key = "AppKey")
+\end{minted}
 
-We kunnen nu in onze notebooks met bovenstaande code secrets zoals bijvoorbeeld `AppKey` ophalen uit key vault.
+We kunnen nu in onze notebooks met bovenstaande code secrets zoals bijvoorbeeld ``AppKey'' ophalen uit key vault.
 
 %\begin{center}
 %    \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_16.png}
@@ -631,13 +695,15 @@ app_key = dbutils.secrets.get(scope = "KeyVault", key = "AppKey")
 tenant_id = "<directory-id>"
 \end{minted}
 
-Om een connectie te kunnen maken met data lake hebben we `storage\_account`, `app\_id`, `app\_key` en `tenant\_id` nodig. Dit kunnen we doen door het volgende te vervangen:
+Om een connectie te kunnen maken met data lake hebben we ``storage\_account'', ``app\_id'', ``app\_key'' en ``tenant\_id'' nodig. Dit kunnen we doen door het volgende te vervangen:
 
 \begin{itemize}
-    \item `<storage-account>` met de naam van het Azure storage account
-    \item `<application-id>` met het Application (client) ID voor de Microsoft Entra ID application
-    \item `<directory-id>` met het Directory (tenant) ID voor de Microsoft Entra ID application
+    \item ``<storage-account>'' met de naam van het Azure storage account
+    \item ``<application-id>'' met het Application (client) ID voor de Microsoft Entra ID application
+    \item ``<directory-id>'' met het Directory (tenant) ID voor de Microsoft Entra ID application
 \end{itemize}
+
+% TODO Meer uitleg geven hierboven over in literatuurstudie?
 
 %\begin{center}
 %    \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_17.png}
@@ -654,7 +720,7 @@ df = spark.read.format("com.microsoft.cdm") \
     .option("mode", "permissive")
 \end{minted}
 
-We kunnen nu gebruik maken van `spark-cdm-connector` door `com.microsoft.cdm` mee te geven. Het is belangrijk dat `mode` op `permissive` staat, dit zorgt er voor dat er null values assigned worden wanneer een CSV rij minder aantal kolommen heeft dan het entity schema.
+We kunnen nu gebruik maken van ``spark-cdm-connector'' door ``com.microsoft.cdm'' mee te geven. Het is belangrijk dat ``mode'' op ``permissive'' staat, dit zorgt er voor dat er ``NULL'' values assigned worden wanneer een CSV rij minder aantal kolommen heeft dan het entity schema.
 
 %\begin{center}
 %    \includegraphics[width=0.9\textwidth]{./graphics/databricks/connection_18.png}
@@ -744,7 +810,7 @@ LEFT JOIN related_premium_requests rpr ON spr.Id = rpr.new_syndicalpremiumreques
 LEFT JOIN new_year ny ON spr.new_yearid = ny.new_yearid;
 \end{minted}
 
-De tabel `new\_year` wordt opnieuw gejoind op de tabel `new\_syndicalpremiumrequest` met behulp van de kolom `new\_yearid`. Daarnaast wordt ook hier de drie kolommen EntryYear, CalendarYear en RefYear berekent. Deze worden op dezelfde manier berekent als bij de transformatie in Azure Data Factory.
+De tabel ``new\_year'' wordt opnieuw gejoind op de tabel ``new\_syndicalpremiumrequest'' met behulp van de kolom ``new\_yearid''. Daarnaast worden ook hier de drie kolommen ``EntryYear'', ``CalendarYear'' en ``RefYear'' berekent. Deze worden op dezelfde manier berekent als bij de transformatie in Azure Data Factory.
 
 
 \begin{minted}{sql}
@@ -761,16 +827,16 @@ LEFT JOIN new_organizationyear_stage_1 noy
     ON spr.new_idadm == noy.new_idadmaux AND spr.new_yearid == noy.new_yearid;
 \end{minted}
 
-De tabellen `new\_membership` en `new\_organizationyear` worden gejoind op de tabel `new\_syndicalpremiumrequest` om de groepen te gaan bepalen. Zoals te zien in de code snippet hierboven noemen deze tabellen `new\_membership\_stage\_1` en `new\_organizationyear\_stage\_1`. Dit komt doordat er reeds andere transformaties zijn geweest.
+De tabellen ``new\_membership'' en ``new\_organizationyear'' worden gejoind op de tabel ``new\_syndicalpremiumrequest'' om de groepen te gaan bepalen. Zoals te zien in de code snippet hierboven noemen deze tabellen ``new\_membership\_stage\_1'' en ``new\_organizationyear\_stage\_1''. Dit komt doordat er reeds andere transformaties zijn geweest.
 
-Bij de tabel `new\_membership` wordt er, net zoals in Azure Data Factory, gekeken of CalendarYear, EntryYear of RefYear overeenkomt met het jaartal van de membership. Daarnaast wordt er ook gekeken of personid overeen komt. 
+Bij de tabel ``new\_membership'' wordt er, net zoals in Azure Data Factory, gekeken of ``CalendarYear'', ``EntryYear'' of ``RefYear'' overeenkomt met het jaartal van de membership. Daarnaast wordt er ook gekeken of personid overeen komt. 
 
-Bij de tabel `new\_organizationyear` wordt er gejoind met behulp van IDADM en het id van het referentiejaar.
+Bij de tabel ``new\_organizationyear'' wordt er gejoind met behulp van IDADM en het id van het referentiejaar.
 
 \begin{center}%
-    \begin{tabularx}{0.7\textwidth}{ |X|X|X| }
+    \begin{tabularx}{0.8\textwidth}{ |X|X|X| }
         \hline
-        spr.Id & nm.new\_groupid & noy.new\_groupid \\
+        \textbf{spr.Id} & \textbf{nm.new\_groupid} & \textbf{noy.new\_groupid} \\
         \hline 
         101e4523-7c60-45ff-a928-087ca139d8f5  & 2ad31fb8-5117-4627-a2a3-a5fdbee5b9ae & null  \\
         \hline
@@ -780,9 +846,9 @@ Bij de tabel `new\_organizationyear` wordt er gejoind met behulp van IDADM en he
     
     \Bigg\downarrow
 
-    \begin{tabularx}{0.7\textwidth}{ |X|X| }
+    \begin{tabularx}{0.8\textwidth}{ |X|X| }
         \hline
-        spr.Id & new\_groupid \\
+        \textbf{spr.Id} & \textbf{new\_groupid} \\
         \hline 
         101e4523-7c60-45ff-a928-087ca139d8f5  & 2ad31fb8-5117-4627-a2a3-a5fdbee5b9ae  \\
         \hline
@@ -795,7 +861,7 @@ Bij de tabel `new\_organizationyear` wordt er gejoind met behulp van IDADM en he
     \end{tabularx}
 \end{center}
 
-Deze twee joins resulteren in twee nieuwe kolommen `nm.new\_groupid` en `noy.new\_groupid`. Met behulp van de `explode` functie zorgen we er voor dat deze twee kolommen één kolom zullen worden. Één rij zal dan bijvoorbeeld twee rijen worden. Deze twee rijen zijn dan volledig hetzelfde met het verschil dat de kolom `new\_groupid` voor de eerste rij de waarde van `nm.new\_groupid` heeft en voor de tweede rij de waarde van `noy.new\_groupid`.
+Deze twee joins resulteren in twee nieuwe kolommen ``nm.new\_groupid'' en ``noy.new\_groupid''. Met behulp van de ``explode'' functie zorgen we er voor dat deze twee kolommen één kolom zullen worden. Één rij zal dan bijvoorbeeld twee rijen worden. Deze twee rijen zijn dan volledig hetzelfde met het verschil dat de kolom ``new\_groupid'' voor de eerste rij de waarde van ``nm.new\_groupid'' heeft en voor de tweede rij de waarde van ``noy.new\_groupid''.
 
 
 \begin{minted}{sql}
@@ -828,9 +894,11 @@ WHERE id IS NOT NULL AND new_groupid IS NOT NULL AND RefYear IS NOT NULL
 GROUP BY (id, new_groupid, RefYear);
 \end{minted}
 
-Ten slotte gaan we een `GROUP BY` clause gebruiken om er voor te zorgen dat een premie niet twee keer naar dezelfde groep voor dat referentiejaar wordt gestuurd. Daarnaast wordt er ook gefilterd zodat er geen premies zijn zonder id, groupid of referentiejaar. Met behulp van de `FIRST` aggregrate function selecteren we steeds de eerste waarde voor de nodige kolommen. We hebben nu een tabel met alle premies waarvan we weten naar welke groep voor welk referentiejaar ze gestuurd moeten worden.
+Ten slotte wordt er een ``GROUP BY'' clause gebruikt om er voor te zorgen dat een premie niet twee keer naar dezelfde groep voor dat referentiejaar wordt gestuurd. Daarnaast wordt er ook gefilterd zodat er geen premies zijn zonder id, groupid of referentiejaar. Met behulp van de ``FIRST'' aggregrate function selecteren we steeds de eerste waarde voor de nodige kolommen. We hebben nu een tabel met alle premies waarvan we weten naar welke groep voor welk referentiejaar ze gestuurd moeten worden.
 
-\textbf{Bepalen van de kolom `Gr` voor een premie}
+\pagebreak
+
+\textbf{Bepalen van de kolom ``Gr'' voor een premie}
 
 \begin{minted}[highlightlines={4}]{sql}
 CREATE
@@ -846,7 +914,7 @@ GROUP BY (new_personid, new_year);
 CREATE 
 OR REPLACE TEMPORARY VIEW spr_stage_4 AS 
 SELECT
-spr.*,
+    spr.*,
     CASE
         WHEN spr.new_groupprefix IS NOT NULL THEN spr.new_groupprefix
         WHEN nmCalendar.new_groupprefix IS NOT NULL THEN nmCalendar.new_groupprefix
@@ -860,9 +928,50 @@ LEFT JOIN nm_grouped_by nmEntry ON spr.new_personid = nmEntry.new_personid AND s
 LEFT JOIN nm_grouped_by nmRef ON spr.new_personid = nmRef.new_personid AND spr.RefYear = nmRef.new_year;
 \end{minted}
 
-Voor het bepalen van de kolom `Gr` in databricks wordt er eerst een temporary view `nm\_grouped\_by` aangemaakt waarbij er gegroepeerd wordt op `new\_personid` en `new\_year`. Dit zal er voor zorgen dat de joins die we uitvoeren zullen resulteren in één enkele match (of geen). De tweede parameter in de functie `FIRST` (aangeduid in code snippet) zorgt er voor dat NULL values genegeerd worden. De eeste waarde die niet NULL is voor `new\_groupprefix` zal dus geselecteerd worden.
+Voor het bepalen van de kolom ``Gr'' in databricks wordt er eerst een temporary view ``nm\_grouped\_by'' aangemaakt waarbij er gegroepeerd wordt op ``new\_personid'' en ``new\_year''. Dit zal er voor zorgen dat de joins die we uitvoeren zullen resulteren in één enkele match (of geen). De tweede parameter in de functie ``FIRST'' (aangeduid in code snippet) zorgt er voor dat ``NULL'' values genegeerd worden. De eeste waarde die niet ``NULL'' is voor ``new\_groupprefix'' zal dus geselecteerd worden.
 
-De temporary view die we hebben aangemaakt wordt nu drie keer gejoind op de tabel `spr\_stage\_3` aan de hand van `new\_personid` en CalendarYear, EntryYear of RefYear. `Gr` zal bepaald worden door eerst te kijken of `spr.new\_groupprefix` niet NULL is, wanneer deze wel NULL is zal er gekeken worden naar `nmCalendar.new\_groupprefix`, `nmEntry.new\_groupprefix` en ten slotte naar `nmRef.new\_groupprefix`.
+De temporary view die we hebben aangemaakt wordt nu drie keer gejoind op de tabel ``spr\_stage\_3'' aan de hand van ``new\_personid'' en ``CalendarYear'', ``EntryYear'' of ``RefYear''. ``Gr'' zal bepaald worden door eerst te kijken of ``spr.new\_groupprefix'' niet ``NULL'' is, wanneer deze wel ``NULL'' is zal er gekeken worden naar ``nmCalendar.new\_groupprefix'', ``nmEntry.new\_groupprefix'' en ten slotte naar ``nmRef.new\_groupprefix''.
+
+\textbf{Bepalen van de kolommen ``AntheaNumber'' en ``MembershipNumber'' voor een premie}
+
+\begin{minted}{sql}
+CREATE
+OR REPLACE TEMPORARY VIEW nm_grouped_by_2 AS
+SELECT 
+    FIRST(new_antheanumber, TRUE) new_antheanumber,
+    FIRST(new_newmembershipnumber, TRUE) new_newmembershipnumber,
+    FIRST(new_groupid) new_groupid, 
+    FIRST(new_year) new_year,
+    FIRST(new_personid) new_personid
+FROM new_membership_stage_1
+WHERE new_antheanumber IS NOT NULL OR new_newmembershipnumber IS NOT NULL
+GROUP BY (new_groupid, new_year, new_personid);
+
+CREATE 
+OR REPLACE TEMPORARY VIEW spr_stage_5 AS 
+SELECT
+spr.*,
+    CASE
+        WHEN Gr IS NULL THEN NULL
+        WHEN nmCalendar.new_antheanumber IS NOT NULL THEN nmCalendar.new_antheanumber
+        WHEN nmEntry.new_antheanumber IS NOT NULL THEN nmEntry.new_antheanumber
+        WHEN nmRef.new_antheanumber IS NOT NULL THEN nmRef.new_antheanumber
+        ELSE NULL
+    END AntheaNumber,
+    CASE
+        WHEN Gr IS NULL THEN NULL
+        WHEN nmCalendar.new_newmembershipnumber IS NOT NULL THEN nmCalendar.new_newmembershipnumber
+        WHEN nmEntry.new_newmembershipnumber IS NOT NULL THEN nmEntry.new_newmembershipnumber
+        WHEN nmRef.new_newmembershipnumber IS NOT NULL THEN nmRef.new_newmembershipnumber
+        ELSE NULL
+    END MembershipNumber
+FROM spr_stage_4 spr
+LEFT JOIN nm_grouped_by_2 nmCalendar ON spr.new_groupid = nmCalendar.new_groupid AND spr.CalendarYear = nmCalendar.new_year AND spr.new_personid = nmCalendar.new_personid
+LEFT JOIN nm_grouped_by_2 nmEntry ON spr.new_groupid = nmEntry.new_groupid AND spr.EntryYear = nmEntry.new_year AND spr.new_personid = nmEntry.new_personid  
+LEFT JOIN nm_grouped_by_2 nmRef ON spr.new_groupid = nmRef.new_groupid AND spr.RefYear = nmRef.new_year AND spr.new_personid = nmRef.new_personid;
+\end{minted}
+
+Voor het bepalen van de kolommen ``AntheaNumber'' en ``MembershipNumber'' wordt er eerst een temporary view ``nm\_grouped\_by\_2'' aangemaakt waarbij er gegroepeerd wordt op ``new\_groupid'', ``new\_year'' en ``new\_personid''. Dit zal er voor zorgen dat de joins die uitgevoerd worden resulteren in één enkele match (of geen). De functie ``FIRST'' zorgt er weer voor dat ``NULL'' values genegeerd worden. De aangemaakte temporary view wordt nu drie keer gejoind op de tabel ``spr\_stage\_4'' aan de hand van ``new\_groupid'', ``new\_personid'' en ``CalendarYear'', ``EntryYear'' of ``RefYear''. Wanneer de kolom ``Gr'', ``NULL'' is, zal ``AntheaNumber'' en ``MembershipNumber'' ook ``NULL zijn. Wanneer dit niet zo is wordt eerst gekeken of de waarde van de join aan de hand van ``CalendarYear'' niet ``NULL'' i. Wanneer dit wel ``NULL'' is zal er vervolgens gekeken worden naar de join aan de hand van ``EntryYear'' en vervolgens naar de join aan de hand van ``RefYear''.
 
 % Einde nieuw
 
