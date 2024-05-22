@@ -87,17 +87,43 @@
 %    texcl=false,
 %}
 
+\usepackage{xcolor}
+\definecolor{backcolor}{RGB}{245, 245, 245}
+\definecolor{customgray}{RGB}{0,0,0}
+\definecolor{hogentcolor}{RGB}{227, 129, 98}
+
+\lstdefinestyle{myStyle}{
+    backgroundcolor=\color{backcolor},   
+%    commentstyle=\color{red},
+    keywordstyle=\color{black}\bfseries,
+    numberstyle=\scriptsize\color{customgray},
+    stringstyle=\ttfamily\color{hogentcolor},
+    basicstyle=\ttfamily\normalsize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
 % Other packages not already included can be imported here
 \usepackage{float}
 \usepackage{multicol}
+\usepackage{bbding}
+
 
 %%---------- Document metadata -------------------------------------------------
 % TODO: Replace this with your own information
 \author{Lievens Loeka}
 \supervisor{Dhr. Bosteels Gertjan}
 \cosupervisor{Dhr. Van Damme Koen}
-\title[Optionele ondertitel]%
-    {Optimaliseren van gegevensverwerkinging in Microsoft Azure: Een vergelijkende analyse tussen Azure Data Factory en Azure Databricks voor het implementeren van Extractie, Transformatie en Laden (ETL)}
+\title%
+    {Optimaliseren van gegevensverwerking in Microsoft Azure: Een vergelijkende analyse tussen Azure Data Factory en Azure Databricks voor het implementeren van Extractie, Transformatie en Laden (ETL)}
 \academicyear{\advance\year by -1 \the\year--\advance\year by 1 \the\year}
 \examperiod{1}
 \degreesought{\IfLanguageName{dutch}{Professionele bachelor in de toegepaste informatica}{Bachelor of applied computer science}}
@@ -156,8 +182,8 @@
 
 % If you included tables and/or source code listings, uncomment the appropriate
 % lines.
-%\listoftables
-%\listoflistings
+\listoftables
+\listoflistings
 
 % Als je een lijst van afkortingen of termen wil toevoegen, dan hoort die
 % hier thuis. Gebruik bijvoorbeeld de ``glossaries'' package.

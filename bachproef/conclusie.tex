@@ -14,23 +14,34 @@
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
 
-In dit onderzoek werd onderzocht welke optie tussen Azure Data Factory en Azure Databricks het beste was voor het implementeren van een ETL.
+In dit onderzoek werd onderzocht welke optie tussen Azure Data Factory en Azure Databricks het beste was voor het implementeren van een ETL voor de gegeven use case.\\
 
-\section{Aan de hand van vergelijkingscriteria}
+Als we gaan kijken naar kostprijs en performantie zien we dat Azure Data Factory consistentere resultaten heeft gepaard met iets hogere kosten. Het is dus interessant om over te stappen op Azure Databricks om kosten te verlagen. Daarnaast is er ook geen groot verschil in performantie. Toch zien we dat als we kijken naar de cluster startup tijden, dat deze bij Databricks hoger liggen dan bij Data Factory. Wanneer er dus gewerkt wordt met een pipeline die vaker uitgevoerd moet worden, waardoor het cluster ingeschakeld kan blijven, zal dit dus resulteren in snellere uitvoeringstijden dan bij Azure Data Factory. Voor de gegeven use case, is op vlak van kostprijs, Azure Databricks dus de beste optie. Op vlak van performantie is het iets moeilijker te zeggen aangezien deze vrij gelijk lopen.\\
+
+Debuggen in Azure Databricks is beter dan bij Azure Data Factory. De tabel die getoond wordt is beter in gebruik en geeft de data gestructureerd weer. De tabel, in Azure Data Factory, kan niet gefilterd worden en weergeeft minder data waardoor het valideren van output vaak moeilijker is. In Databricks was dit wel het geval waardoor dat de implementatietijd versnelde.\\
+
+Zowel Azure Data Factory als Azure Databricks hebben beide de mogelijkheid om source control te gebruiken. Bij Azure Data Factory kan ook de infrastructuur opgeslaan worden in source control. Dit gebeurd in de vorm van Azure Resource Manager (ARM) templates. Bij Databricks gaat dit iets moeilijker, de opzet van een Databricks omgeving kan in ARM templates aangemaakt worden maar specifieke dingen zoals bijvoorbeeld clusters kunnen hier niet mee gecreëerd worden. Hiervoor zal er dus gebruik gemaakt moeten worden van Databricks Asset Bundles (DABs). Het zal dus iets moeilijker zijn om Infrastructure as Code (IaC) te gebruiken in Databricks waardoor op dit vlak Data Factory aan te raden valt.\\
+
+Voor de gegeven use case is het interessant om over te stappen op Azure Databricks om kosten te verbeteren. Ook voor nieuwe ETL-oplossingen in de toekomst is Azure Databricks een interessante optie. Het is makkelijker om te debuggen maar vraagt meer technische kennis doordat er gebruik gemaakt wordt van code. Voor een developer (of team van developers) is Azure Databricks dus een betere keuze. Voor iemand met minder programmeerervaring is Azure Data Factory de betere optie.
+
+%\section{Aan de hand van vergelijkingscriteria}
 
 % Kostprijs - Performantie
 
-Als we gaan kijken naar kostprijs en performantie zien we dat Azure Data Factory consistentere resultaten heeft gepaard met iets hogere kosten. Daarnaast zien we dat Databricks performanter is dan Data Factory wanneer een hoger aantal Cores gebruikt word. Wanneer we kijken naar de cluster startup tijden zien we dat deze bij Databricks hoger liggen dan bij Data Factory. Wanneer er dus gewerkt wordt met een pipeline die vaker uitgevoerd moet worden, waardoor het cluster ingeschakeld kan blijven, zal dit dus resulteren in snellere uitvoeringstijden dan bij Azure Data Factory. Op vlak van kostprijs en performantie is het dus moeilijk om te zeggen welke optie de beste is. Afhankelijk van use case zal dit enorm hard verschillen.\\
+%Als we gaan kijken naar kostprijs en performantie zien we dat Azure Data Factory consistentere resultaten heeft gepaard met iets hogere kosten. Daarnaast zien we dat Databricks performanter is dan Data Factory wanneer een hoger aantal Cores gebruikt word. Wanneer we kijken naar de cluster startup tijden zien we dat deze bij Databricks hoger liggen dan bij Data Factory. Wanneer er dus gewerkt wordt met een pipeline die vaker uitgevoerd moet worden, waardoor het cluster ingeschakeld kan blijven, zal dit dus resulteren in snellere uitvoeringstijden dan bij Azure Data Factory. Op vlak van kostprijs en performantie is het dus moeilijk om te zeggen welke optie de beste is. Afhankelijk van use case zal dit enorm hard verschillen.\\
 
 
 % Mogelijkheid tot debuggen
 
-Debuggen in Azure Databricks is beter dan bij Azure Data Factory. De tabel die getoond wordt is makkelijker te gebruiken en toon de data gestructureerd weer. In Data Factory werd de volledige kolom naam vaak niet volledig getoond en was het moeilijker om de kolom breder te maken. Daarnaast kon deze tabel ook niet gefilterd worden of konden hier geen visualisaties voor gemaakt worden. In Databricks was dit wel het geval waardoor het implementeren van de pipeline hier makkelijker werd.\\
+%Debuggen in Azure Databricks is beter dan bij Azure Data Factory. De tabel die getoond wordt is makkelijker te gebruiken en toon de data gestructureerd weer. In Data Factory werd de volledige kolom naam vaak niet volledig getoond en was het moeilijker om de kolom breder te maken. Daarnaast kon deze tabel ook niet gefilterd worden of konden hier geen visualisaties voor gemaakt worden. In Databricks was dit wel het geval waardoor het implementeren van de pipeline hier makkelijker werd.\\
 
 % Source control - Infrastructure as Code
 
-Zowel Azure Data Factory als Azure Databricks hebben beide de mogelijkheid om source control te gebruiken. Bij Azure Data Factory kan ook de infrastructuur opgeslaan worden in source control. Dit gebeurd in de vorm van Azure Resource Manager (ARM) templates. Bij Databricks gaat dit iets moeilijker, de opzet van een Databricks omgeving kan in ARM templates aangemaakt worden maar specifieke dingen zoals bijvoorbeeld clusters kunnen hier niet mee gecreëerd worden. Hiervoor zal er dus gebruik gemaakt moeten worden van Terraform of Databricks Asset Bundles (DABs). Het zal dus iets moeilijker zijn om Infrastructure as Code (IaC) te gebruiken in Databricks waardoor op dit vlak Data Factory aan te raden valt.
+%Zowel Azure Data Factory als Azure Databricks hebben beide de mogelijkheid om source control te gebruiken. Bij Azure Data Factory kan ook de infrastructuur opgeslaan worden in source control. Dit gebeurd in de vorm van Azure Resource Manager (ARM) templates. Bij Databricks gaat dit iets moeilijker, de opzet van een Databricks omgeving kan in ARM templates aangemaakt worden maar specifieke dingen zoals bijvoorbeeld clusters kunnen hier niet mee gecreëerd worden. Hiervoor zal er dus gebruik gemaakt moeten worden van Terraform of Databricks Asset Bundles (DABs). Het zal dus iets moeilijker zijn om Infrastructure as Code (IaC) te gebruiken in Databricks waardoor op dit vlak Data Factory aan te raden valt.
 
-\section{Eigen ervaring}
+%\section{Eigen ervaring}
 
-Persoonlijk gaat mijn voorkeur naar Azure Databricks. Azure Data Factory was makkelijker om te gaan gebruiken maar doordat de uitgewerkte pipeline zeer complex was werd dit vaak minder overzichtelijk dan in Azure Databricks. Door mijn eigen kennis en ervaring in SQL vond ik bij het implementeren van de pipeline in Azure Databricks fouten in Azure Data Factory. Persoonlijk lijkt mij Databricks dus voor een developer een betere keus dan Data Factory. Voor iemand met minder programmeerervaring zou ik voor Azure Data Factory gaan hanteren.
+%Persoonlijk gaat mijn voorkeur naar Azure Databricks. Azure Data Factory was makkelijker om te gaan gebruiken maar doordat de uitgewerkte pipeline zeer complex was werd dit vaak minder overzichtelijk dan in Azure Databricks. Door mijn eigen kennis en ervaring in SQL vond ik bij het implementeren van de pipeline in Azure Databricks fouten in Azure Data Factory. Persoonlijk lijkt mij Databricks dus voor een developer een betere keus dan Data Factory. Voor iemand met minder programmeerervaring zou ik voor Azure Data Factory gaan hanteren.
+
+%\section{Verder onderzoek}
+
